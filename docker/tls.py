@@ -2,7 +2,7 @@ import os
 
 from . import errors
 from .ssladapter import ssladapter
-import requests
+
 
 class TLSConfig(object):
     cert = None
@@ -60,9 +60,9 @@ class TLSConfig(object):
                 )
 
     def configure_client(self, client):
+        client.ssl_version = self.ssl_version
         if self.verify is not None:
             client.verify = self.verify
         if self.cert:
             client.cert = self.cert
-        print client.verify
-        print client.cert
+        client.mount('https://', ssladapter.SSLAdapter(self.ssl_version))
